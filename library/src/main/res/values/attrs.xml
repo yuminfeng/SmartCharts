@@ -1,0 +1,10 @@
+<resources>
+
+    <declare-styleable name="SimpleChart">
+        <attr name="horizontalLineColor" format="color" />
+        <attr name="horizontalLineStrokeWidth" format="dimension" />
+        <attr name="categoryTextColor" format="color" />
+        <attr name="categoryTextSize" format="dimension" />
+    </declare-styleable>
+
+</resources>

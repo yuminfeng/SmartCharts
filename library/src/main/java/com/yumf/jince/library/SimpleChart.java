@@ -173,9 +173,9 @@ public class SimpleChart extends View {
 
         if (num > 0) {
             if (num == max) {
-                rectTop = baseTop;
+                rectTop = h - baseTop;;
             } else {
-                rectTop = (float) ((h - baseTop) * (1 - num / max) + baseTop);
+                rectTop = (float) (h - baseTop * (num / max));
             }
             rectBottom = h - mLineStrokeWidth / 2;
             textY = rectTop - 15;
@@ -184,9 +184,9 @@ public class SimpleChart extends View {
         } else {
             rectTop = h + mLineStrokeWidth / 2;
             if (num == max) {
-                rectBottom = rectTop;
+                rectBottom = rectTop + baseTop - 20;;
             } else {
-                rectBottom = (float) ((h - baseTop) * Math.abs(num / max) + rectTop);
+                rectBottom = (float) (baseTop * Math.abs(num / max) + rectTop);
             }
             textY = rectBottom + 30;
             textNum = "-" + num + "亿";

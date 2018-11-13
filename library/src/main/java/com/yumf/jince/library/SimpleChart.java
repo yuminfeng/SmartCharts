@@ -41,6 +41,8 @@ public class SimpleChart extends View {
 
     private Paint mPaintChart;
 
+    private int mStringHeight;
+
     public SimpleChart(Context context) {
         this(context, null);
     }
@@ -113,11 +115,11 @@ public class SimpleChart extends View {
         int height = getHeight();
         Log.e(TAG, "width:" + width + " ,height:" + height);
 
-        //居中绘制水平线
-        drawHorizontalLine(canvas, width, height / 2);
-
         //绘制分组类别数据
         drawCategoryText(canvas, width, height);
+
+        //居中绘制水平线
+        drawHorizontalLine(canvas, width, (height - getStringHeight() - BOTTOM_PADDING) / 2);
 
     }
 
@@ -126,6 +128,10 @@ public class SimpleChart extends View {
         mCategoryData.addAll(categories);
 
         invalidate();
+    }
+
+    public int getStringHeight() {
+        return mStringHeight;
     }
 
     private void drawHorizontalLine(Canvas canvas, int width, int h) {
@@ -146,6 +152,9 @@ public class SimpleChart extends View {
                 mPaintCategory.getTextBounds(label, 0, label.length(), rect);
                 if (stringWidth < rect.width()) {
                     stringWidth = rect.width();
+                    mStringHeight = rect.height();
+
+                    Log.e("yumf", "mString height:" + mStringHeight);
                 }
                 nums.add(num);
             }
@@ -155,7 +164,7 @@ public class SimpleChart extends View {
                 String label = mCategoryData.get(i).getLabel();
                 double num = mCategoryData.get(i).getNum();
                 canvas.drawText(label, startLeft, height - BOTTOM_PADDING, mPaintCategory);
-                drawCharts(canvas, height / 2, startLeft, stringWidth, num, numMax);
+                drawCharts(canvas, (height - getStringHeight() - BOTTOM_PADDING) / 2, startLeft, stringWidth, num, numMax);
                 startLeft += stringWidth + space;
             }
         }
@@ -173,23 +182,24 @@ public class SimpleChart extends View {
 
         if (num > 0) {
             if (num == max) {
-                rectTop = h - baseTop;;
+                rectTop = h - baseTop;
             } else {
                 rectTop = (float) (h - baseTop * (num / max));
             }
             rectBottom = h - mLineStrokeWidth / 2;
             textY = rectTop - 15;
-            textNum = "+" + num + "亿";
+            textNum = "+" + num;
             mPaintChart.setColor(Color.parseColor("#FC4430"));
         } else {
             rectTop = h + mLineStrokeWidth / 2;
             if (num == max) {
-                rectBottom = rectTop + baseTop - 20;;
+                rectBottom = rectTop + baseTop - 20;
+                ;
             } else {
                 rectBottom = (float) (baseTop * Math.abs(num / max) + rectTop);
             }
             textY = rectBottom + 30;
-            textNum = "-" + num + "亿";
+            textNum = String.valueOf(num);
             mPaintChart.setColor(Color.parseColor("#00FF00"));
         }
         RectF rect = new RectF(l, rectTop, w + l, rectBottom);
